@@ -1,1 +1,18 @@
-
+name: smart_fridge_env
+version: 0.1.0
+description: "A Smart Fridge environment for OpenEnv Hackathon."
+entry_point: "app.py"
+api:
+  base_url: "http://127.0.0.1:8000"
+  reset_endpoint: "/reset"
+  step_endpoint: "/step"
+  state_endpoint: "/state"
+action_space:
+  - consume_milk
+  - consume_eggs
+  - consume_apple
+observation_space:
+  - milk
+  - eggs
+  - apple
+reward_function: "Returns +1 for consuming items before expiry, 0 otherwise."
