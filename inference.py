@@ -1,23 +1,40 @@
 import os
 import requests
 
-API_BASE_URL = os.environ.get("API_BASE_URL", "http://127.0.0.1:8000")
-MODEL_NAME = os.environ.get("MODEL_NAME", "dummy_model")
-HF_TOKEN = os.environ.get("HF_TOKEN", "")
+# -------------------------------
+# Step C: OpenEnv Validator Format
+# -------------------------------
 
-def run_agent():
-    # Reset environment
-    r = requests.get(f"{API_BASE_URL}/reset")
-    state = r.json()['state']
+# Must have [START] at the beginning
+print("[START] inference.py")
 
-    # Example action
-    action = "consume_milk"
-    r = requests.post(f"{API_BASE_URL}/step", json={"action": action})
-    result = r.json()
+# API URL from environment variable
+API_BASE_URL = os.getenv("API_BASE_URL", "http://127.0.0.1:7860")
 
-    print("START")
-    print("STEP 1:", result)
-    print("END")
+# -------------------------------
+# 1. RESET the environment
+# -------------------------------
+try:
+    res = requests.post(f"{API_BASE_URL}/reset").json()
+    print(f"[STEP] reset: {res}")
+except Exception as e:
+    print(f"[STEP] reset failed: {e}")
 
-if __name__ == "__main__":
-    run_agent()
+# -------------------------------
+# 2. Perform sample actions
+# -------------------------------
+
+actions = ["consume_milk", "check_items", "add_item"]
+
+for action in actions:
+    try:
+        payload = {"action": action}
+        res = requests.post(f"{API_BASE_URL}/step", json=payload).json()
+        print(f"[STEP] action '{action}': {res}")
+    except Exception as e:
+        print(f"[STEP] action '{action}' failed: {e}")
+
+# -------------------------------
+# Must have [END] at the end
+# -------------------------------
+print("[END] inference.py")
