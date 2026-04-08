@@ -1,7 +1,7 @@
 from fastapi import FastAPI
-from env import SmartFridgeEnv  # your environment class
+from env import SmartFridgeEnv
 
-app = FastAPI()  # <-- this must be exactly named "app"
+app = FastAPI()
 env = SmartFridgeEnv()
 
 @app.post("/reset")
@@ -10,10 +10,10 @@ def reset_env():
     return {"state": state, "status": "ok"}
 
 @app.post("/step")
-def step_env(action: dict):
-    result = env.step(action)
+def step_env(payload: dict):
+    result = env.step(payload)
     return result
 
 @app.get("/state")
-def get_state():
+def state_env():
     return {"state": env.state}
