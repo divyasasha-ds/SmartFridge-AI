@@ -1,4 +1,4 @@
-FROM python:3.9
+FROM python:3.11
 
 RUN useradd -m -u 1000 user
 USER user
@@ -10,5 +10,4 @@ COPY --chown=user ./requirements.txt requirements.txt
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 COPY --chown=user . /app
-EXPOSE 7860
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "7860"]
